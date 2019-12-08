@@ -6,4 +6,5 @@ elm-stuff
 repl-temp-*
 out
 node_modules
+.idea
 
