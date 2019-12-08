@@ -5,11 +5,10 @@ module Die exposing
     , combinations
     , createDice
     , dieFace
-    , dieIndex
     , hasFarkled
     , isMarked
     , markedDice
-    , toggleDie
+    , toggle
     )
 
 import Util exposing (..)
@@ -32,21 +31,16 @@ type alias Combination =
 
 
 type Die
-    = Die { face : Int, marked : Bool, index : Int }
+    = Die { face : Int, marked : Bool }
 
 
 type alias Dice =
     List Die
 
 
-createDie : Int -> Face -> Die
-createDie index face =
-    Die { face = face, marked = False, index = index }
-
-
 createDice : Faces -> Dice
-createDice faces =
-    List.indexedMap createDie faces
+createDice =
+    List.map (\face -> Die { face = face, marked = False })
 
 
 dieFace : Die -> Face
@@ -59,14 +53,14 @@ isMarked (Die die) =
     die.marked
 
 
-dieIndex : Die -> Int
-dieIndex (Die die) =
-    die.index
+toggle : Int -> Dice -> Dice
+toggle index =
+    List.indexedMap (toggleDie index)
 
 
-toggleDie : Int -> Die -> Die
-toggleDie index (Die die) =
-    Die { die | marked = (die.index == index) /= die.marked }
+toggleDie : Int -> Int -> Die -> Die
+toggleDie toggleIndex index (Die die) =
+    Die { die | marked = (toggleIndex == index) /= die.marked }
 
 
 markedDice : Dice -> Faces

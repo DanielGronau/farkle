@@ -215,7 +215,7 @@ rollDice size =
 toggleDice : Model -> Int -> Model
 toggleDice model index =
     { model
-        | dice = List.map (toggleDie index) model.dice
+        | dice = Die.toggle index model.dice
         , dialog = Nothing
     }
 
@@ -283,7 +283,7 @@ view model =
             ]
         , Grid.row []
             [ Grid.col []
-                (List.map faceToImgTag model.dice)
+                (List.indexedMap faceToImgTag model.dice)
             ]
         , Grid.row []
             [ Grid.col []
@@ -363,9 +363,9 @@ secondPlayerPoints model =
         model.inactive
 
 
-faceToImgTag : Die -> Html Msg
-faceToImgTag die =
-    img [ src <| "assets/" ++ imageFile die, style "padding" "5px", onClick <| ToggleDie <| dieIndex die ] []
+faceToImgTag : Int -> Die -> Html Msg
+faceToImgTag index die =
+    img [ src <| "assets/" ++ imageFile die, style "padding" "5px", onClick <| ToggleDie <| index ] []
 
 
 imageFile : Die -> String
